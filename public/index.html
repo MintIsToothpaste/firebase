@@ -5,9 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  <title>project</title>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-  <title>project</title>
+  <link href="main.css" rel="stylesheet">
+
+  
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -81,12 +85,13 @@
       결과.forEach((doc)=>{
         console.log(doc.data())
         var 템플릿 = `<div class="design">
-        <div class="thumbnail" style="background-image: url(${doc.data().image})"></div>
+        <div class="thumbnail">
+          <img src="${doc.data().image}" alt="..." width = "100" height = "100">
+        </div>
         <div class="flex-grow-1 p-4">
           <h5 class="title">${doc.data().title}</h5>
           <p class="date">${doc.data().date}</p>
           <p class="code">${doc.data().code}</p>
-          <p class="float-end">?0</p>
         </div>
         </div>`;
         $('.container').append(템플릿) 
