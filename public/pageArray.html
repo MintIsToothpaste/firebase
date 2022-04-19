@@ -51,10 +51,8 @@
   </nav>
 
   <div class="container mt-3">
-    <input type="text" class="form-control mt-2" id="title" placeholder="title">
-    <textarea class="form-control mt-2" id="code">code</textarea>
-    <input class="form-control mt-2" type="file" id="image">
-    <button class="btn btn-danger mt-3" id="send">올리기</button>
+    <button class="btn btn-danger mt-3" id="save">저장하기</button>
+    <button class="btn btn-danger mt-3" id="recall">불러오기</button>
   </div>
   
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
@@ -83,48 +81,46 @@
   <script>
 
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
-    $('#send').click(function(){
+    $('#save').click(function(){
 
-      var file = document.querySelector('#image').files[0];
-      var storageRef = storage.ref();
-      var 저장할경로 = storageRef.child('image/' + file.name);
-      var 업로드작업 = 저장할경로.put(file)
+        // 샘플용
+        var pageArray = {
+        ID : "Object0",
+        X : 218,
+        Y : 119,
+        W : 198,
+        H : 270,
+        Color : "C4C4C4",
+        Strok : "FFFFFF"
+        };
 
-      업로드작업.on( 'state_changed', 
-        // 변화시 동작하는 함수 
-        null, 
-        //에러시 동작하는 함수
-        (error) => {
-          console.error('실패사유는', error);
-        }, 
-        // 성공시 동작하는 함수
-        () => {
-          업로드작업.snapshot.ref.getDownloadURL().then((url) => {
-            console.log('업로드된 경로는', url);
+        var pageArray_str = JSON.stringify(pageArray);
 
-            date = new Date();
-            year = date.getFullYear();
-            month = date.getMonth() + 1; 
-            day = date.getDate();
+        db.collection('save').add(pageArray).then((result)=>{
+            window.location.href = '/index.html'
+        }).catch((error)=>{
+            console.log(err)
+        })
+    });
 
-            var 저장할거 = { 
-              title : $('#title').val(),
-              code : $('#code').val(),
-              date : year + "년" + month + "월" + day + "일",
-              image : url
-            }
-            db.collection('design').add(저장할거).then((result)=>{
-              console.log(result)
-              window.location.href = '/index.html'
-            }).catch((error)=>{
-              console.log(err)
-          })
-        });
-      }
-    );
-  });
+    $('#recall').click(function(){
+
+        db.collection('save').get().then((결과)=>{
+            결과.forEach((doc)=>{
+                console.log(doc.data())
+                
+                var pageArray_str = JSON.stringify(doc.data());
+
+                var 템플릿 = `<div class="design">
+                <div class="flex-grow-1 p-4">
+                    <h5 class="price">${pageArray_str}</h5>
+                </div>
+                </div>`;
+                $('.container').append(템플릿) 
+            })
+        })
+    });
 
   </script>
 
