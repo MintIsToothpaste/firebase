@@ -84,8 +84,8 @@
 
     $('#save').click(function(){
 
-        // 샘플용
-        var pageArray = {
+      // example
+    	var pageArray1 = {
         ID : "Object0",
         X : 218,
         Y : 119,
@@ -93,33 +93,60 @@
         H : 270,
         Color : "C4C4C4",
         Strok : "FFFFFF"
-        };
+      };
 
-        var pageArray_str = JSON.stringify(pageArray);
+      var pageArray2 = {
+        ID : "Object1",
+        X : 11,
+        Y : 22,
+        W : 33,
+        H : 44,
+        Color : "C1C1C1",
+        Strok : "FFFFFF"
+      };
 
-        db.collection('save').add(pageArray).then((result)=>{
-            window.location.href = '/index.html'
-        }).catch((error)=>{
-            console.log(err)
-        })
+      var pageArray3 = {
+        ID : "Object2",
+        X : 22,
+        Y : 33,
+        W : 44,
+        H : 55,
+        Color : "C3C3C3",
+        Strok : "FFFFFF"
+      };
+
+      db.collection('save').add(pageArray1).then((result)=>{
+          window.location.href = '/index.html'
+      }).catch((error)=>{
+          console.log(err)
+      })
+
+      db.collection('save').add(pageArray2).then((result)=>{
+          window.location.href = '/index.html'
+      }).catch((error)=>{
+          console.log(err)
+      })
+
+      db.collection('save').add(pageArray3).then((result)=>{
+          window.location.href = '/index.html'
+      }).catch((error)=>{
+          console.log(err)
+      })
     });
 
     $('#recall').click(function(){
 
-        db.collection('save').get().then((결과)=>{
-            결과.forEach((doc)=>{
-                console.log(doc.data())
-                
-                var pageArray_str = JSON.stringify(doc.data());
+      let pageArray = new Array(0);
 
-                var 템플릿 = `<div class="design">
-                <div class="flex-grow-1 p-4">
-                    <h5 class="price">${pageArray_str}</h5>
-                </div>
-                </div>`;
-                $('.container').append(템플릿) 
-            })
+    	db.collection('save').get().then((결과)=>{
+        결과.forEach((doc)=>{
+                
+          // pageArray에 담기
+          pageArray = doc.data()
+
+          console.log(pageArray)
         })
+      })
     });
 
   </script>
