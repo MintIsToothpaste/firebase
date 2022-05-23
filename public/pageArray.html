@@ -81,70 +81,139 @@
   <script>
 
     const db = firebase.firestore();
+    //const database = firebase.database();
 
     $('#save').click(function(){
 
+      let pageArray_ex = new Array(0);
+
       // example
     	var pageArray1 = {
-        ID : "Object0",
-        X : 218,
-        Y : 119,
-        W : 198,
-        H : 270,
-        Color : "C4C4C4",
-        Strok : "FFFFFF"
+        canvas : "klass {_objects: Array(2), lowerCanvasEl: canvas#canvas-page-0.s-lGOyMSU-CVDD.lower-canvas, _originalCanvasStyle: CSSStyleDeclaration}",
+        canvasId : "canvas-page-0",
+        canvasMrapperId : "canvas-page-0-wrapper",
+        defaultObject : "DefaultObjectClass {box: klass, title: klass}",
+        index : 0,
+        object : [],
+        path : "/",
+        selectComponent: [],
+        zoom: 0.3,
+        Prototype : "object"
       };
 
       var pageArray2 = {
-        ID : "Object1",
-        X : 11,
-        Y : 22,
-        W : 33,
-        H : 44,
-        Color : "C1C1C1",
-        Strok : "FFFFFF"
+        canvas : "klass {_objects: Array(2), lowerCanvasEl: canvas#canvas-page-0.s-lGOyMSU-CVDD.lower-canvas, _originalCanvasStyle: CSSStyleDeclaration}",
+        canvasId : "canvas-page-0",
+        canvasMrapperId : "canvas-page-0-wrapper",
+        defaultObject : "DefaultObjectClass {box: klass, title: klass}",
+        index : 0,
+        object : [],
+        path : "/",
+        selectComponent: [],
+        zoom: 0.3,
+        Prototype : "object"
       };
 
       var pageArray3 = {
-        ID : "Object2",
-        X : 22,
-        Y : 33,
-        W : 44,
-        H : 55,
-        Color : "C3C3C3",
-        Strok : "FFFFFF"
+        canvas : "klass {_objects: Array(2), lowerCanvasEl: canvas#canvas-page-0.s-lGOyMSU-CVDD.lower-canvas, _originalCanvasStyle: CSSStyleDeclaration}",
+        canvasId : "canvas-page-0",
+        canvasMrapperId : "canvas-page-0-wrapper",
+        defaultObject : "DefaultObjectClass {box: klass, title: klass}",
+        index : 0,
+        object : [],
+        path : "/",
+        selectComponent: [],
+        zoom: 0.3,
+        Prototype : "object"
       };
 
-      db.collection('save').add(pageArray1).then((result)=>{
-          window.location.href = '/index.html'
-      }).catch((error)=>{
-          console.log(err)
-      })
+      pageArray_ex[0] = pageArray1
+      pageArray_ex[1] = pageArray2
+      pageArray_ex[2] = pageArray3
 
-      db.collection('save').add(pageArray2).then((result)=>{
-          window.location.href = '/index.html'
-      }).catch((error)=>{
-          console.log(err)
-      })
+      //pageArray_ex 대신 실제 pageArray 사용
 
-      db.collection('save').add(pageArray3).then((result)=>{
-          window.location.href = '/index.html'
-      }).catch((error)=>{
+      let jsonCanvas = new Array(0);
+      let jsonCanvasId = new Array(0);
+      let jsonCanvasMrapperId = new Array(0);
+      let jsonDefaultObject = new Array(0);
+      let jsonIndex = new Array(0);
+      let jsonObject = new Array(0);
+      let jsonPath = new Array(0);
+      let jsonSelectComponent = new Array(0);
+      let jsonZoom = new Array(0);
+      let jsonPrototype = new Array(0);
+
+      for(var i = 0; i < pageArray_ex.length; i++){
+        jsonCanvas[i] = JSON.stringify(pageArray_ex[i].canvas);
+        jsonCanvasId[i] = JSON.stringify(pageArray_ex[i].canvasId);
+        jsonCanvasMrapperId[i] = JSON.stringify(pageArray_ex[i].canvasMrapperId);
+        jsonDefaultObject[i] = JSON.stringify(pageArray_ex[i].defaultObject);
+        jsonIndex[i] = JSON.stringify(pageArray_ex[i].index);
+        jsonObject[i] = JSON.stringify(pageArray_ex[i].object);
+        jsonPath[i] = JSON.stringify(pageArray_ex[i].path);
+        jsonSelectComponent[i] = JSON.stringify(pageArray_ex[i].selectComponent);
+        jsonZoom[i] = JSON.stringify(pageArray_ex[i].zoom);
+        jsonPrototype[i] = JSON.stringify(pageArray_ex[i].Prototype);
+      }
+
+      // 이건 그대로
+      for(var i = 0; i < pageArray_ex.length; i++) {
+        db.collection('save').add({
+          canvas : jsonCanvas[i],
+          canvasId : jsonCanvasId[i],
+          canvasMrapperId : jsonCanvasMrapperId[i],
+          defaultObject : jsonDefaultObject[i],
+          index : jsonIndex[i],
+          object : jsonObject[i],
+          path : jsonPath[i],
+          selectComponent: jsonSelectComponent[i],
+          zoom: jsonZoom[i],
+          Prototype : jsonPrototype[i]
+        })
+        .then((result)=>{
+          //window.location.href = '/index.html'
+          console.log(pageArray_ex)
+        })
+        .catch((error)=>{
           console.log(err)
-      })
+        })
+      }
     });
 
     $('#recall').click(function(){
 
-      let pageArray = new Array(0);
+      let pageArray_ex2 = new Array(0);
 
     	db.collection('save').get().then((결과)=>{
         결과.forEach((doc)=>{
-                
-          // pageArray에 담기
-          pageArray = doc.data()
+          let pageArray_fire = doc.data();
+          
+          for(var i = 0; i < pageArray_fire.length; i++){
 
-          console.log(pageArray)
+          }
+          
+          for(var i = 0; i < pageArray_fire.length; i++){
+            var pageArray1 = {
+              "canvas" : pageArray_fire[i].canvas,
+              "canvasId" : pageArray_fire[i].canvasId,
+              "canvasMrapperId" : pageArray_fire[i].canvasMrapperId,
+              "defaultObject" : pageArray_fire[i].defaultObject,
+              "index" : pageArray_fire[i].index,
+              "object" : pageArray_fire[i].object,
+              "path" : pageArray_fire[i].path,
+              "selectComponent": pageArray_fire[i].selectComponent,
+              "zoom": pageArray_fire[i].zoom,
+              "Prototype" : pageArray_fire[i].Prototype
+            };
+            
+            pageArray_ex2[i] = JSON.parse(pageArray1);
+
+            console.log(pageArray_ex2)
+
+          }
+          console.log(pageArray_ex2)
+          
         })
       })
     });

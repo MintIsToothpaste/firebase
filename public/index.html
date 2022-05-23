@@ -53,8 +53,13 @@
       </div>
     </div>
   </nav>
+
+  <button id="loginBTN" onclick="signInUser()">Login With GitHub</button>
+  <button id="logoutBTN" onclick="logout()">Logout</button>
   
-  <div class="container mt-3"></div>
+  <div class="container mt-3">
+    <button class="btn btn-danger mt-3" id="recall">uid 불러오기</button>
+  </div>
   
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
@@ -77,9 +82,61 @@
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-  </script>
 
-  <script>
+    document.getElementById('logoutBTN').style.display = "none"
+    document.getElementById('loginBTN').style.display = "block"
+  
+    var provider = new firebase.auth.GithubAuthProvider();
+
+    function signInUser(){
+        firebase.auth().signInWithPopup(provider).then(res=>{
+            let token = res.credential.accessToken;
+            let user = res.user;
+            
+            document.getElementById('logoutBTN').style.display = "block"
+            document.getElementById('loginBTN').style.display = "none"
+        }).catch(e=>{
+            console.log(e)
+        })
+    }
+
+    function logout(){
+        firebase.auth().signOut().then(()=>{
+            console.log('User Logout success')
+        }).catch(e=>{
+            console.log(e)
+        })
+    }
+
+    firebase.auth().onAuthStateChanged((user)=>{
+        if(user) {   
+            console.log(user)
+            
+            document.getElementById('logoutBTN').style.display = "block"
+            document.getElementById('loginBTN').style.display = "none"
+        } else {
+            document.getElementById('logoutBTN').style.display = "none"
+            document.getElementById('loginBTN').style.display = "block"
+        }
+    });
+
+    $('#recall').click(function(){
+      var user = firebase.auth().currentUser;
+      var email, uid;
+
+      if (user) {
+
+        email = user.email;
+        uid = user.uid;
+
+        console.log(email)
+        console.log(uid)
+      } else {
+        console.log("fail")
+      }
+
+    });
+  
     const db = firebase.firestore();
     db.collection('design').get().then((결과)=>{
       결과.forEach((doc)=>{
